@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Command</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #73a5ff, #5477f5);
+            color: #fff;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #ff6b6b;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #ff4a4a;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        #response {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voice Command App</h1>
+    <button id="recordButton">Start Recording</button>
+    <p id="transcribedText"></p>
+    <p id="response"></p>
+
+    <script>
+        document.getElementById("recordButton").onclick = function() {
+            fetch('/voice_command', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("transcribedText").innerText = "Prompt: " + data.transcription;
+                document.getElementById("response").innerText = "Response: " + data.response;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("response").innerText = "Error: " + error.message;
+            });
+        };
+    </script>
+</body>
+</html>
